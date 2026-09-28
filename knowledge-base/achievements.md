@@ -1,6 +1,6 @@
-# Achievements — Quadient RevOps
+# Achievements
 
-Extracted from `quadient-raw.md`. Format: **metric → what I built → tools used**.
+Extracted from `quadient-raw.md` and `resume-raw.md`. Format: **metric → what I built → tools used**.
 Items marked *(in progress)* or *(open)* were not confirmed complete as of the source material (Sep 8, 2026). Don't claim them as finished in proposals.
 
 ## Salesforce integration & automation
@@ -39,10 +39,40 @@ Items marked *(in progress)* or *(open)* were not confirmed complete as of the s
 - **Recurring "conflict quotes" issue root-caused** → NCV provider-key resolution workflow + rep training, edge cases routed to a ticket → Salesforce, SAP data
 - **~13 role changes validated (2 COO, 1 VP, 3 renames, 2 re-parents, 2 Serensia, 1 APAC VP, 2 NORAM QAR)** *(4 users still unprovisioned)* → EMEA/NORAM role hierarchy restructure driving Clari quota rollups, with structural-change and per-user update sheets → Salesforce, SOQL, Salesforce Inspector
 
+## AltaML — RevOps Analyst, Workflow Automation (05/2025 – 10/2025)
+
+Source: `resume-raw.md`.
+
+- **>$550K qualified top-of-funnel pipeline** → AI-powered lead generation system using predictive models and market segmentation → n8n, APIs, Python, LLMs
+- **Forecast accuracy +20%, manual calculations eliminated** → Automated forecasting tool and dashboard processing HubSpot data via API → HubSpot, API integrations, Python, dashboards
+- **15 hrs/week saved, 100% opportunity capture rate** → AI agent for RFP opportunity analysis → n8n, LLMs, JSON
+- **Hyper-personalized nurture across market verticals** → Automated nurture campaigns using AI search agents with real-time industry content → HubSpot workflows, AI agents
+
+## JBC Flow — Director, own agency (09/2024 – current)
+
+- **>$281K USD pipeline** → AI-driven outbound system for an ecommerce service agency → AI agents, outbound tooling (Apollo, Instantly, Sales Navigator, Apify per resume tool list)
+- **First 3 enterprise users** → Outbound for a US pre-seed medical technology startup → AI-driven outbound
+- **Opportunity sourcing + qualification automated** → AI-agent sales automation for a luxury retailer → AI agents
+- **Full consultative sales cycle** → Discovery, tailored proposals, negotiation, close for SME clients
+
+## Sales roles
+
+- **>40 hrs/week of sales admin saved** → CRM AI automations (Showpass, Sales Executive, 09/2023 – 04/2024) → Salesforce
+- **>$110M USD in qualified opportunities** → Multi-channel ICP outbound (Showpass) → Salesforce
+- **>$20M USD in qualified opportunities** → Outbound for a UBM SaaS (Panevo, Sales Executive, 12/2022 – 06/2023)
+
+## Engineering background (context only — not RevOps)
+
+- B.Eng. Mechanical, Memorial University (2021); APEGA Member-in-Training
+- $14M+ pipeline infrastructure project delivered on time and on budget (Aker Solutions); >$1M in project-control discrepancies prevented via integrity audits (Surerus Murphy); ~$100K consulting costs saved by fixing data errors (Aalto University)
+
 ## Tools & systems (full list)
 
-- **CRM:** Salesforce (multi-org: AP/Beanworks + Digital/CXM), SOQL, Salesforce Inspector, Record Types, role hierarchy, custom report types, dashboards
-- **Automation:** Zapier (multi-stage sub-zap chains, code steps, workspace migration), JavaScript
+- **CRM:** Salesforce (multi-org: AP/Beanworks + Digital/CXM), HubSpot, SOQL, Salesforce Inspector, Record Types, role hierarchy, custom report types, dashboards
+- **Automation:** Zapier (multi-stage sub-zap chains, code steps, workspace migration), n8n, Make.com, JavaScript, Python, JSON, API integrations
+- **AI:** LLM integrations and AI agents (ChatGPT, Claude, Perplexity), Clari RevAI prompting, Gong AI Data Extractor
+- **Outbound:** Apollo, Instantly, Sales Navigator, Apify, Calendly
+- **BI:** Power BI
 - **Revenue intelligence:** Gong (Trackers, AI Data Extractor, Forecast, admin/security config), Clari (Studio, RevAI Smart CRM Fields, Copilot, quota/forecast)
 - **Partner:** PartnerStack
 - **Data:** Excel (SUMPRODUCT, IFS, XLOOKUP, COUNTIFS, pivots, weighted scoring models), Python openpyxl, direct XML file repair, OneDrive

@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This repo is my RevOps freelance workspace. Source of truth for my experience: `knowledge-base/achievements.md` (summary) and `knowledge-base/quadient-raw.md` (full record). Service tiers and rates: `knowledge-base/services-menu.md`.
+This repo is my RevOps freelance workspace. Source of truth for my experience: `knowledge-base/achievements.md` (summary) and `knowledge-base/quadient-raw.md` (full Quadient record), `knowledge-base/resume-raw.md` (full resume: AltaML, JBC Flow, sales and engineering roles). Service tiers and rates: `knowledge-base/services-menu.md`.
 
 ## Voice & tone
 
