@@ -10,6 +10,10 @@ My RevOps freelance workspace — knowledge base, service menu, and Upwork propo
 - `knowledge-base/upwork-profile.md` — Live Upwork profile copy (title, intro, employment entries).
 - `knowledge-base/achievements.md` — Every quantified achievement, tool, and system, as metric → what I built → tools used.
 - `knowledge-base/services-menu.md` — 3 offer tiers (Fractional RevOps, RevOps Consulting, RevOps Automation Build) with pitches and rate ranges.
+- `knowledge-base/case-studies.md` — Case studies in "I did X for Y by Z" format, plus confidentiality rules.
+- `knowledge-base/application-template.md` — Upwork application and Loom structure, Connects rules.
+- `knowledge-base/30-day-plan.md` — Daily routine, targets and scorecard.
+- `.mcp.json` — Registers the Upwork MCP server.
 - `proposals/` — Generated Upwork proposals.
 
 ## Usage

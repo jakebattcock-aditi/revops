@@ -23,3 +23,17 @@ When given an Upwork job post, output: (1) which tier fits, (2) a 100-150 word p
 - Pull achievements from `knowledge-base/achievements.md`; pick the 1-2 closest to the job's actual problem.
 - Suggested rate should sit inside the tier's range; note the reasoning in one line.
 - Save finished proposals to `proposals/` as `YYYY-MM-DD-short-job-name.md`.
+- Use `knowledge-base/application-template.md` for structure: first line is about THEM and what I built for them, never "I'm an expert". Pick case studies from `knowledge-base/case-studies.md`.
+- Confidentiality: never use Quadient's name with specifics, employee/HR data, vendor contract or DPIA details, partner-compensation logic, internal names or IDs. Say "a global B2B software company."
+
+## Upwork job search (Upwork MCP)
+
+When asked to find jobs, use the Upwork MCP tools (account org_uid comes from `list_accounts`). Read-only: never submit a proposal, spend Connects, send a message or accept anything without my explicit "yes, submit" for that specific job. I'm on a tight Connects budget, so favor quality over volume.
+
+**Search** (several queries, dedupe, prefer `mode=most_recent` for speed): Salesforce admin/integration, HubSpot audit/automation, CRM audit/cleanup, Zapier, n8n, Make.com, RevOps, sales operations, Gong, Clari, sales forecasting, AI agent/workflow automation.
+
+**Skip:** cold calling/appointment setting/list building, pure Apex/LWC dev, SEO/ads, Zoho/GoHighLevel-only, under $500 fixed or under $40/hr, payment unverified, 50+ proposals on a job older than a day.
+
+**Score 1–5:** fit to my case studies, fit to a service tier, budget, client quality (verified payment, rating, hires, spend), competition (proposal count, age). Prefer jobs posted in the last few hours.
+
+**Output:** table sorted by score (title, link, budget, client stats, proposals, tier, score, one-line why). For the top 2–3, draft the application per the template and save to `proposals/`.
