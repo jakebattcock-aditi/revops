@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>8 ways a CRM sync fails without telling you</title>
+<style>
+  @page{size:Letter;margin:0.6in 0.65in}
+  *{box-sizing:border-box}
+  body{font-family:"DejaVu Sans","Helvetica Neue",Arial,sans-serif;color:#1f2933;font-size:10.5pt;line-height:1.42;margin:0}
+  h1{font-size:23pt;margin:0 0 4pt;letter-spacing:-.3px}
+  .lead{color:#5f6c7b;font-size:11pt;margin:0 0 14pt}
+  .item{border:1.5px solid #1f2933;border-radius:9px;padding:9pt 12pt 8pt;margin-bottom:9pt;break-inside:avoid;background:#fbfaf7}
+  .item h2{font-size:12.5pt;margin:0 0 4pt}
+  .num{display:inline-block;width:20pt;height:20pt;border-radius:50%;background:#1f2933;color:#fff;text-align:center;line-height:20pt;font-size:10.5pt;margin-right:7pt}
+  .row{margin:2pt 0}
+  .row b{display:inline-block;width:86pt;color:#5f6c7b;font-weight:700;font-size:9pt;text-transform:uppercase;letter-spacing:.4px;vertical-align:top}
+  .row span{display:inline-block;width:calc(100% - 92pt)}
+  .check b{color:#2f6fb3}
+  .cta{margin-top:12pt;border:2px dashed #b4452f;border-radius:9px;padding:10pt 14pt;background:#fff}
+  .cta b{color:#b4452f}
+  .foot{margin-top:8pt;font-size:8.5pt;color:#5f6c7b}
+</style>
+</head>
+<body>
+<h1>8 ways a CRM sync fails without telling you</h1>
+<p class="lead">A sync can run green for months while quietly sending bad data. These are the patterns I look for first, and how to check each one in about ten minutes.</p>
+
+<div class="item"><h2><span class="num">1</span>A placeholder left in a live field</h2>
+  <div class="row"><b>Looks like</b><span>A test value typed in while building (a sample headcount, a fixed date) never got swapped for the real field.</span></div>
+  <div class="row"><b>Why it hides</b><span>Nothing errors. Every record just gets the same value.</span></div>
+  <div class="row check"><b>Check</b><span>Pull 20 recent records. Is any field identical on all of them?</span></div></div>
+
+<div class="item"><h2><span class="num">2</span>A test ID hardcoded in a live step</h2>
+  <div class="row"><b>Looks like</b><span>One step uses a literal record ID instead of a mapped value, so it keeps processing the same record.</span></div>
+  <div class="row"><b>Why it hides</b><span>The step succeeds every time, just on the wrong data.</span></div>
+  <div class="row check"><b>Check</b><span>Open every step. Any value that is not a mapped field is a suspect.</span></div></div>
+
+<div class="item"><h2><span class="num">3</span>A match key saved only when a record is created</h2>
+  <div class="row"><b>Looks like</b><span>The source ID is written on create but not on update, so records that already existed never get it.</span></div>
+  <div class="row"><b>Why it hides</b><span>Later lookups quietly miss those records and create a duplicate or an orphan.</span></div>
+  <div class="row check"><b>Check</b><span>Count the records that are missing the key. It should be zero.</span></div></div>
+
+<div class="item"><h2><span class="num">4</span>Searching on a blank value</h2>
+  <div class="row"><b>Looks like</b><span>A contact with no email gets searched by email anyway.</span></div>
+  <div class="row"><b>Why it hides</b><span>A blank search can return nothing, or the wrong record, and neither raises an error.</span></div>
+  <div class="row check"><b>Check</b><span>Put a "does the value exist?" guard in front of every search, and log what it skips.</span></div></div>
+
+<div class="item"><h2><span class="num">5</span>Overlapping match conditions</h2>
+  <div class="row"><b>Looks like</b><span>An OR condition that already covers a narrower one, so the narrow rule does nothing and the broad one over-matches.</span></div>
+  <div class="row"><b>Why it hides</b><span>It works for most names, then merges two different customers that share a long prefix.</span></div>
+  <div class="row check"><b>Check</b><span>Test with two made-up records that share the first 40 characters of their name.</span></div></div>
+
+<div class="item"><h2><span class="num">6</span>Updates that overwrite good data</h2>
+  <div class="row"><b>Looks like</b><span>An update step sends blank or fixed text to a field that already has a real value.</span></div>
+  <div class="row"><b>Why it hides</b><span>The record saves fine. The old value is just gone.</span></div>
+  <div class="row check"><b>Check</b><span>Run an update on a record that already has data. Compare the field before and after.</span></div></div>
+
+<div class="item"><h2><span class="num">7</span>Defaults that invent data</h2>
+  <div class="row"><b>Looks like</b><span>A missing date becomes today, a missing owner becomes a catch-all user.</span></div>
+  <div class="row"><b>Why it hides</b><span>The default keeps the sync alive, but reports built on that field are now wrong.</span></div>
+  <div class="row check"><b>Check</b><span>List every default. For each one, ask which report reads that field.</span></div></div>
+
+<div class="item"><h2><span class="num">8</span>Leftovers: debug switches and dead outputs</h2>
+  <div class="row"><b>Looks like</b><span>Debug logging still on in production, or a flag calculated from the wrong variable that nothing reads yet.</span></div>
+  <div class="row"><b>Why it hides</b><span>Noisy logs bury real errors. A dead flag is harmless until someone starts relying on it.</span></div>
+  <div class="row check"><b>Check</b><span>Search for debug switches. For every output, find what reads it.</span></div></div>
+
+<div class="cta"><b>Want this run on your sync?</b> I can audit it against live data, list every issue with how serious it is, and fix the ones that matter. Message me on Upwork with what you're connecting and what you've noticed.</div>
+<div class="foot">Patterns drawn from auditing multi-stage CRM integrations. Examples are generic. No company or customer data.</div>
+</body>
+</html>

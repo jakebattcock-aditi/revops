@@ -1,0 +1,925 @@
+{
+  "name": "Deal Sync Demo (Source CRM to Target CRM)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "deal-created",
+        "options": {}
+      },
+      "id": "eb2b1355-2232-4b17-b5f6-29937f637add",
+      "name": "New deal created in Source CRM",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resume": "timeInterval",
+        "amount": 5,
+        "unit": "minutes"
+      },
+      "id": "22cffeca-3631-430e-a547-e94bddc12f8b",
+      "name": "Wait 5 minutes",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Stage 2: clean the account up before searching the target CRM\nconst src = $('New deal created in Source CRM').first().json.body;\nconst MAX = 40;\nconst name = (src.account.name || '').trim();\nlet line1 = name, line2 = '';\nif (name.length > MAX) {\n  const cut = name.lastIndexOf(' ', MAX);\n  line1 = cut > 0 ? name.slice(0, cut) : name.slice(0, MAX);\n  line2 = name.slice(line1.length).trim();\n}\nconst ORG = { UK01: ['United Kingdom','EMEA'], FR01: ['France','EMEA'], US01: ['United States','Americas'], CA01: ['Canada','Americas'] };\nconst CUR = { GBP: 'UK01', EUR: 'FR01', USD: 'US01', CAD: 'CA01' };\nconst org = (src.account.salesOrg || '').trim() || CUR[(src.account.currency || '').trim()] || '';\nconst [country, region] = ORG[org] || ['Unknown', 'Unknown'];\nconst n = Number(src.account.employees);\nconst bands = [[1,10,'1-10'],[11,50,'11-50'],[51,200,'51-200'],[201,500,'201-500'],[501,1000,'501-1,000'],[1001,5000,'1,001-5,000'],[5001,10000,'5,001-10,000']];\nconst hit = bands.find(([lo, hi]) => n >= lo && n <= hi);\nconst sizeBand = Number.isFinite(n) && n >= 1 ? (hit ? hit[2] : '10,001+') : '';\nreturn [{ json: { line1: line1.replace(/'/g, \"\\\\'\"), line2, country, region, salesOrg: org, sizeBand } }];\n"
+      },
+      "id": "673520fc-267a-4721-a840-cb993c890efd",
+      "name": "Normalise account",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://target-crm.example/api/accounts?name={{ encodeURIComponent($json.line1) }}",
+        "options": {}
+      },
+      "id": "846b7dae-8c0f-4723-8387-f09d43d68c6e",
+      "name": "Find account in Target CRM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ ($json.results || []).length > 0 }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "2964f50f-41a9-4673-8ec6-cc6e58d1f6ea",
+      "name": "Account found?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        960,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "https://target-crm.example/api/accounts/{id}",
+        "options": {},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { sizeBand: $(\"Normalise account\").first().json.sizeBand, region: $(\"Normalise account\").first().json.region } }}"
+      },
+      "id": "27232cb8-9fae-4c88-8953-3724e6d27371",
+      "name": "Update account",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://target-crm.example/api/accounts",
+        "options": {},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $(\"Normalise account\").first().json }}"
+      },
+      "id": "a55e3971-7781-4901-8435-a8061cb471c6",
+      "name": "Create account",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Carry the target account ID and a few derived values forward\nconst a = $input.first().json;\nreturn [{ json: { targetAccountId: a.id, region: $('Normalise account').first().json.region } }];\n"
+      },
+      "id": "7c350c01-5cd3-4f52-962a-b0dd47facaa9",
+      "name": "Account result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Stage 3: three-tier fallback. Deal contact role, then account primary, then first contact.\nconst src = $('New deal created in Source CRM').first().json.body;\nconst c = (v) => (v || '').trim();\nlet id = '', source = 'No contact found';\nif (c(src.contacts.roleContact)) { id = c(src.contacts.roleContact); source = 'Deal contact role'; }\nelse if (c(src.contacts.primaryContact)) { id = c(src.contacts.primaryContact); source = 'Account primary contact'; }\nelse if (c(src.contacts.firstContact)) { id = c(src.contacts.firstContact); source = 'First account contact'; }\nconst email = c(src.contactRecord.email);\n// A blank email can match the wrong record, so refuse to search on it\nreturn [{ json: { contactId: id, source, email, hasEmail: id !== '' && email !== '' } }];\n"
+      },
+      "id": "f4859c48-fd6e-4671-8506-0aff5dea63a3",
+      "name": "Pick best contact",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.hasEmail }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "cac65efe-25ff-4ee1-9921-44f8594a02b9",
+      "name": "Contact has email?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://sheets.example/api/error-log/rows",
+        "options": {},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { dealId: $('New deal created in Source CRM').first().json.body.deal.sourceId, problem: \"Contact missing or has no email\", contactSource: $json.source } }}"
+      },
+      "id": "2355d67e-f47c-4f9d-aeff-0e5c4df8d5f2",
+      "name": "Log: contact has no email",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2160,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://target-crm.example/api/contacts?email={{ encodeURIComponent($json.email) }}",
+        "options": {}
+      },
+      "id": "a8e9b816-34d6-43b1-ab1c-46c7292367c5",
+      "name": "Find contact by email",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2160,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ ($json.results || []).length > 0 }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "2e56dc19-1f5d-42c6-b97d-ae1c86792ced",
+      "name": "Contact found?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        2400,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://target-crm.example/api/contacts",
+        "options": {},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { email: $(\"Pick best contact\").first().json.email, accountId: $(\"Account result\").first().json.targetAccountId } }}"
+      },
+      "id": "6a2a8318-d14a-4df6-b851-4a57fe49c634",
+      "name": "Create contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2640,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Whichever branch ran, return one contact ID\nconst c = $input.first().json;\nreturn [{ json: { targetContactId: c.id || (c.results && c.results[0] && c.results[0].id) || '' } }];\n"
+      },
+      "id": "fdf68ea9-b21a-4524-917d-f15516f96462",
+      "name": "Contact result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2880,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ !!($('New deal created in Source CRM').first().json.body.partner.secondary || $('New deal created in Source CRM').first().json.body.partner.primary) }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "7b288bee-054c-464b-9589-31a458f3a8d7",
+      "name": "Partner on deal?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        3120,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Stage 4: secondary partner contact, else primary, else null (null is safe for a reference field)\nconst p = $('New deal created in Source CRM').first().json.body.partner;\nconst pick = (p.secondary || '').trim() || (p.primary || '').trim() || null;\nreturn [{ json: { partnerContact: pick } }];\n"
+      },
+      "id": "395cbe56-d43f-4170-9db2-53770d8a1794",
+      "name": "Choose partner contact",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3360,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Stage 5: skip blank / \"NO CAMPAIGN\", translate the campaign type, never guess\nconst camp = $('New deal created in Source CRM').first().json.body.campaign;\nconst id = (camp.id || '').trim();\nconst hasCampaign = id !== '' && id.toUpperCase() !== 'NO CAMPAIGN';\nconst TYPES = { 'Display Ads': 'Banner Ads', 'Email Batch': 'Email Batch', 'Internal Telemarketing': 'Telemarketing', 'External Telemarketing': 'Telemarketing - External', 'Search Engine Advertising': 'Paid Search', 'Tradeshow': 'Tradeshow', 'Webinar': 'Webinar' };\nreturn [{ json: { hasCampaign, campaignId: id, campaignType: TYPES[(camp.type || '').trim()] || '' } }];\n"
+      },
+      "id": "c277f2d5-5174-4f88-8eae-0f9afbbd3b04",
+      "name": "Campaign check and type translation",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3600,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.hasCampaign }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "027a128c-a7ab-468c-9189-75f58cb9387d",
+      "name": "Valid campaign?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        3840,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://target-crm.example/api/campaigns/upsert",
+        "options": {},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { sourceId: $json.campaignId, type: $json.campaignType } }}"
+      },
+      "id": "a0f05f56-76ba-4f0a-a348-fbf696ccbf16",
+      "name": "Find or create campaign",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4080,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://target-crm.example/api/campaigns/members",
+        "options": {},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { contactId: $(\"Contact result\").first().json.targetContactId } }}"
+      },
+      "id": "d11c5aa1-f8b4-44d1-860b-0bdc17bfd59f",
+      "name": "Add contact to campaign",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4320,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Stage 6: decide the deal type, the owner and whether the campaign is attached\nconst src = $('New deal created in Source CRM').first().json.body;\nconst PARTNER_SOURCES = ['Reseller Referral', 'Partner Event', 'Partner Mailing'];\nconst ALWAYS_PASS = ['camp-referral-A', 'camp-referral-B'];\nconst partnerLed = ALWAYS_PASS.includes((src.campaign.id || '').trim()) ? false : PARTNER_SOURCES.includes((src.deal.leadSource || '').trim());\nconst type = src.account.isPartner ? 'Partner Deal' : (Number(src.deal.existingNewBusinessDeals || 0) === 0 ? 'New Business' : 'Upsell');\nconst owner = (src.deal.mappedOwner || '').trim() || 'owner-general-001'; // never block a sync on a missing owner\nconst partnerContact = (src.partner.secondary || '').trim() || (src.partner.primary || '').trim() || null;\nreturn [{ json: { type, owner, partnerLed, partnerContact, sourceId: src.deal.sourceId } }];\n"
+      },
+      "id": "ae27d809-bd44-4b8e-a642-23b9db38540a",
+      "name": "Deal type, owner and lead path",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4560,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://target-crm.example/api/deals?sourceId={{ $json.sourceId }}",
+        "options": {}
+      },
+      "id": "e0be49df-7007-44de-9a39-a14f2d24122c",
+      "name": "Find deal by source ID",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4800,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ ($json.results || []).length > 0 }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "4b53f192-5372-44ad-a9ed-45bc2024e1d6",
+      "name": "Already synced?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        5040,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://sheets.example/api/error-log/rows",
+        "options": {},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { dealId: $(\"Deal type, owner and lead path\").first().json.sourceId, problem: \"Deal already synced, skipped\" } }}"
+      },
+      "id": "9361bf00-bb57-4707-b7e1-ab8917a7517b",
+      "name": "Log: duplicate deal",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5280,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://target-crm.example/api/deals",
+        "options": {},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { name: $(\"Normalise account\").first().json.line1 + \" - \" + $(\"Normalise account\").first().json.region, type: $(\"Deal type, owner and lead path\").first().json.type, ownerId: $(\"Deal type, owner and lead path\").first().json.owner, sourceId: $(\"Deal type, owner and lead path\").first().json.sourceId } }}"
+      },
+      "id": "92fb403e-8bf5-4600-af9e-85c6805b46f7",
+      "name": "Create deal",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5280,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://target-crm.example/api/deals/{id}/contact-roles",
+        "options": {},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { contactId: $(\"Contact result\").first().json.targetContactId, role: \"Champion\", primary: true } }}"
+      },
+      "id": "884f8b3c-a6d1-4bc5-bac0-93436fe90d09",
+      "name": "Create primary contact role",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5520,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ !!$('Deal type, owner and lead path').first().json.partnerContact }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "a6722ad0-53d6-4ebf-9067-2e7741e8173f",
+      "name": "Partner contact present?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        5760,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://target-crm.example/api/deals/{id}/contact-roles",
+        "options": {},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { contactId: $(\"Deal type, owner and lead path\").first().json.partnerContact, role: \"Influencer\", primary: false } }}"
+      },
+      "id": "447816a1-cc1d-41fa-9501-4b3273d7d9a9",
+      "name": "Create influencer contact role",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6000,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 1. Trigger\nNew deal arrives. Wait 5 minutes so related records finish saving.",
+        "height": 110,
+        "width": 480,
+        "color": 7
+      },
+      "id": "5029fcff-ed5a-4bd3-b1bb-fa64b3b06ee6",
+      "name": "Note 1. Trigger",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 2. Account\nClean the name, map region (with fallback), band the size, find or create.",
+        "height": 110,
+        "width": 760,
+        "color": 7
+      },
+      "id": "b7fea93e-025f-41d0-a172-a99fcd64c24a",
+      "name": "Note 2. Account",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        460,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 3. Contact\nThree-tier fallback. No email means log it, never guess.",
+        "height": 110,
+        "width": 1000,
+        "color": 7
+      },
+      "id": "49a04267-2427-434b-beb0-5629d96b0678",
+      "name": "Note 3. Contact",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1660,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 4. Partner\nSecondary, then primary, then null.",
+        "height": 110,
+        "width": 480,
+        "color": 7
+      },
+      "id": "0b5710fd-5de3-4856-a665-99276cf9d5ae",
+      "name": "Note 4. Partner",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        3100,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 5. Campaign\nSkip blanks, translate the type, add the contact.",
+        "height": 110,
+        "width": 900,
+        "color": 7
+      },
+      "id": "bd56b545-538b-4b12-8d10-22b4ad42600f",
+      "name": "Note 5. Campaign",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        3580,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 6. Deal\nType, owner, duplicate guard, contact roles.",
+        "height": 110,
+        "width": 1700,
+        "color": 7
+      },
+      "id": "78a38a06-2f60-4f03-94f1-5b679ad560cd",
+      "name": "Note 6. Deal",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        4540,
+        60
+      ]
+    }
+  ],
+  "connections": {
+    "New deal created in Source CRM": {
+      "main": [
+        [
+          {
+            "node": "Wait 5 minutes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 5 minutes": {
+      "main": [
+        [
+          {
+            "node": "Normalise account",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalise account": {
+      "main": [
+        [
+          {
+            "node": "Find account in Target CRM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find account in Target CRM": {
+      "main": [
+        [
+          {
+            "node": "Account found?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Account found?": {
+      "main": [
+        [
+          {
+            "node": "Update account",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create account",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update account": {
+      "main": [
+        [
+          {
+            "node": "Account result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create account": {
+      "main": [
+        [
+          {
+            "node": "Account result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Account result": {
+      "main": [
+        [
+          {
+            "node": "Pick best contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick best contact": {
+      "main": [
+        [
+          {
+            "node": "Contact has email?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contact has email?": {
+      "main": [
+        [
+          {
+            "node": "Find contact by email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log: contact has no email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find contact by email": {
+      "main": [
+        [
+          {
+            "node": "Contact found?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contact found?": {
+      "main": [
+        [
+          {
+            "node": "Contact result",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create contact": {
+      "main": [
+        [
+          {
+            "node": "Contact result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contact result": {
+      "main": [
+        [
+          {
+            "node": "Partner on deal?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Partner on deal?": {
+      "main": [
+        [
+          {
+            "node": "Choose partner contact",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Campaign check and type translation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Choose partner contact": {
+      "main": [
+        [
+          {
+            "node": "Campaign check and type translation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campaign check and type translation": {
+      "main": [
+        [
+          {
+            "node": "Valid campaign?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Valid campaign?": {
+      "main": [
+        [
+          {
+            "node": "Find or create campaign",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Deal type, owner and lead path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find or create campaign": {
+      "main": [
+        [
+          {
+            "node": "Add contact to campaign",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add contact to campaign": {
+      "main": [
+        [
+          {
+            "node": "Deal type, owner and lead path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deal type, owner and lead path": {
+      "main": [
+        [
+          {
+            "node": "Find deal by source ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find deal by source ID": {
+      "main": [
+        [
+          {
+            "node": "Already synced?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Already synced?": {
+      "main": [
+        [
+          {
+            "node": "Log: duplicate deal",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create deal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create deal": {
+      "main": [
+        [
+          {
+            "node": "Create primary contact role",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create primary contact role": {
+      "main": [
+        [
+          {
+            "node": "Partner contact present?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Partner contact present?": {
+      "main": [
+        [
+          {
+            "node": "Create influencer contact role",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "note": "Made-up demo. Placeholder URLs and fictional data. No real company logic."
+  },
+  "tags": []
+}

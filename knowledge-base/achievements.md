@@ -5,7 +5,7 @@ Items marked *(in progress)* or *(open)* were not confirmed complete as of the s
 
 ## Salesforce integration & automation
 
-- **7 stages, ~136 steps, every new Opportunity synced in real time** → Project Gemini: one-way, event-driven AP → Digital Salesforce sync (Opportunity, Account, Contact, VAR contacts, Campaign) using scripted find-or-create across two different data models → Zapier (chained sub-zaps), JavaScript code steps, Salesforce (2 orgs), SOQL
+- **7 stages, 136 steps (verified against the live exports: 8+13+14+25+19+20+37), every new Opportunity synced in real time** → Project Gemini: one-way, event-driven AP → Digital Salesforce sync (Opportunity, Account, Contact, VAR contacts, Campaign) using scripted find-or-create across two different data models → Zapier (chained sub-zaps), JavaScript code steps, Salesforce (2 orgs), SOQL
 - **~15KB JS step mapping 4 AP record types** → Stage 5 Opportunity logic: Record Type / Solution / Logo Type / Distribution Channel mapping, New Business vs. Upsell decisioning, 4 create paths each with duplicate guard + error log → Zapier, JavaScript, Salesforce, Excel/OneDrive
 - **100% of Zapier-created campaigns had blank Campaign Type → fixed** → Campaign Type translation step against an AP→Digital lookup table → Zapier, Salesforce
 - **2 referral campaigns overridden + one-time backfill** → AP Referral campaign override and Primary Campaign Source backfill via two-query reconciliation → Zapier, SOQL, Excel (XLOOKUP)

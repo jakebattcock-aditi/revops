@@ -1,0 +1,144 @@
+{
+  "_note": "Made-up records for the demo. Not real customers, contacts or partners.",
+  "defaultOwner": "owner-general-001",
+  "alwaysPassCampaigns": [
+    "camp-referral-A",
+    "camp-referral-B"
+  ],
+  "scenarios": [
+    {
+      "name": "1. New customer, long name, no sales org, no campaign",
+      "account": {
+        "name": "O'Neill Brightwave Logistics & Freight Solutions International Group",
+        "salesOrg": "",
+        "currency": "GBP",
+        "employees": 140,
+        "isPartner": false
+      },
+      "contacts": {
+        "roleContact": "",
+        "primaryContact": "c-primary-7",
+        "firstContact": "c-first-2"
+      },
+      "contactRecord": {
+        "email": "dana.reyes@brightwave.example"
+      },
+      "partner": {
+        "secondary": "",
+        "primary": ""
+      },
+      "campaign": {
+        "id": "NO CAMPAIGN",
+        "type": ""
+      },
+      "deal": {
+        "sourceId": "deal-1001",
+        "leadSource": "Website",
+        "existingNewBusinessDeals": 0,
+        "mappedOwner": ""
+      },
+      "existingDeal": null
+    },
+    {
+      "name": "2. Existing customer with a reseller, referral campaign, repeat purchase",
+      "account": {
+        "name": "Harlow Printworks",
+        "salesOrg": "US01",
+        "currency": "USD",
+        "employees": 620,
+        "isPartner": false
+      },
+      "contacts": {
+        "roleContact": "c-role-9",
+        "primaryContact": "",
+        "firstContact": ""
+      },
+      "contactRecord": {
+        "email": "sam.ortiz@harlow.example"
+      },
+      "partner": {
+        "secondary": "",
+        "primary": "p-primary-4"
+      },
+      "campaign": {
+        "id": "camp-referral-A",
+        "type": "Display Ads"
+      },
+      "deal": {
+        "sourceId": "deal-1002",
+        "leadSource": "Reseller Referral",
+        "existingNewBusinessDeals": 2,
+        "mappedOwner": "owner-ana-12"
+      },
+      "existingDeal": null
+    },
+    {
+      "name": "3. Deal that has already been synced",
+      "account": {
+        "name": "Pinecrest Dental Group",
+        "salesOrg": "CA01",
+        "currency": "CAD",
+        "employees": 35,
+        "isPartner": false
+      },
+      "contacts": {
+        "roleContact": "c-role-3",
+        "primaryContact": "",
+        "firstContact": ""
+      },
+      "contactRecord": {
+        "email": "lee.chan@pinecrest.example"
+      },
+      "partner": {
+        "secondary": "",
+        "primary": ""
+      },
+      "campaign": {
+        "id": "camp-webinar-22",
+        "type": "Webinar"
+      },
+      "deal": {
+        "sourceId": "deal-1003",
+        "leadSource": "Webinar",
+        "existingNewBusinessDeals": 0,
+        "mappedOwner": "owner-ana-12"
+      },
+      "existingDeal": {
+        "sourceId": "deal-1003"
+      }
+    },
+    {
+      "name": "4. Contact with no email",
+      "account": {
+        "name": "Redfern Tools",
+        "salesOrg": "FR01",
+        "currency": "EUR",
+        "employees": 8,
+        "isPartner": false
+      },
+      "contacts": {
+        "roleContact": "c-role-5",
+        "primaryContact": "",
+        "firstContact": ""
+      },
+      "contactRecord": {
+        "email": ""
+      },
+      "partner": {
+        "secondary": "p-second-8",
+        "primary": "p-primary-8"
+      },
+      "campaign": {
+        "id": "",
+        "type": ""
+      },
+      "deal": {
+        "sourceId": "deal-1004",
+        "leadSource": "Partner Event",
+        "existingNewBusinessDeals": 0,
+        "mappedOwner": "owner-ana-12"
+      },
+      "existingDeal": null
+    }
+  ]
+}

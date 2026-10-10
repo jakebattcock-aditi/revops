@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Deal Sync architecture</title>
+<style>
+  :root{
+    --ink:#1f2933; --muted:#5f6c7b; --line:#c9d2dc; --paper:#fbfaf7;
+    --c1:#e8f1fb; --c2:#eaf6ee; --c3:#fdf3e1; --c4:#f1ecfa; --c5:#fbebea; --c6:#e6f4f5;
+    --accent:#2f6fb3; --guard:#b4452f;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"DejaVu Sans","Helvetica Neue",Arial,sans-serif;width:1800px;height:760px;padding:44px 52px;}
+  h1{font-size:34px;margin:0 0 6px;letter-spacing:-.3px}
+  .sub{color:var(--muted);font-size:17px;margin-bottom:34px}
+  .flow{display:flex;gap:26px;align-items:stretch}
+  .card{flex:1;border:2px solid var(--ink);border-radius:14px;padding:18px 18px 16px;position:relative;min-height:360px}
+  .card:not(:last-child)::after{content:"";position:absolute;right:-24px;top:50%;width:0;height:0;border-left:16px solid var(--ink);border-top:10px solid transparent;border-bottom:10px solid transparent;transform:translateY(-50%)}
+  .n{display:inline-block;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;text-align:center;line-height:34px;font-weight:700;font-size:17px;margin-right:10px;vertical-align:middle}
+  .t{font-size:21px;font-weight:700;vertical-align:middle}
+  ul{margin:16px 0 0;padding-left:20px;font-size:15.5px;line-height:1.45}
+  li{margin-bottom:9px}
+  .guard{margin-top:12px;padding:8px 10px;border-radius:8px;background:#fff;border:1.5px dashed var(--guard);color:var(--guard);font-size:14px;line-height:1.35}
+  .c1{background:var(--c1)} .c2{background:var(--c2)} .c3{background:var(--c3)} .c4{background:var(--c4)} .c5{background:var(--c5)} .c6{background:var(--c6)}
+  .log{margin-top:34px;border:2px dashed var(--guard);border-radius:12px;padding:14px 20px;background:#fff;display:flex;gap:18px;align-items:center}
+  .log b{color:var(--guard);font-size:18px}
+  .log span{font-size:16px;color:var(--ink)}
+  .foot{margin-top:18px;font-size:13.5px;color:var(--muted)}
+  .sys{display:flex;justify-content:space-between;margin-bottom:12px;font-size:15px;font-weight:700;color:var(--accent)}
+  .sys div{border:2px solid var(--accent);border-radius:10px;padding:8px 16px;background:#fff}
+</style>
+</head>
+<body>
+  <h1>Deal Sync: Source CRM to Target CRM</h1>
+  <div class="sub">Six chained stages. Each one looks first, then updates or creates, so nothing is blindly copied. Demo built on made-up data.</div>
+  <div class="sys"><div>Source CRM (new deal created)</div><div>Target CRM (records appear, linked and de-duplicated)</div></div>
+
+  <div class="flow">
+    <div class="card c1">
+      <span class="n">1</span><span class="t">Trigger</span>
+      <ul>
+        <li>New deal arrives from the Source CRM</li>
+        <li>Wait 5 minutes so the related account and contacts finish saving</li>
+        <li>Pass IDs forward, stage to stage</li>
+      </ul>
+    </div>
+    <div class="card c2">
+      <span class="n">2</span><span class="t">Account</span>
+      <ul>
+        <li>Clean the name: 40-character limit, quote-safe</li>
+        <li>Region from sales org, currency as the fallback</li>
+        <li>Size band from employee count</li>
+        <li>Find in Target CRM, update or create</li>
+      </ul>
+      <div class="guard">Blank beats wrong: no size data means no band, not a made-up one</div>
+    </div>
+    <div class="card c3">
+      <span class="n">3</span><span class="t">Contact</span>
+      <ul>
+        <li>Deal role, then account primary, then first contact</li>
+        <li>Match by email, create if missing</li>
+      </ul>
+      <div class="guard">No email? Log it and stop. A blank search can match the wrong person</div>
+    </div>
+    <div class="card c4">
+      <span class="n">4</span><span class="t">Partner</span>
+      <ul>
+        <li>Secondary contact, else primary, else none</li>
+        <li>Empty is sent as null, never as blank text</li>
+      </ul>
+    </div>
+    <div class="card c5">
+      <span class="n">5</span><span class="t">Campaign</span>
+      <ul>
+        <li>Skip blank or "NO CAMPAIGN"</li>
+        <li>Translate the type between the two systems</li>
+        <li>Add the contact as a member</li>
+      </ul>
+      <div class="guard">Unknown type stays blank. No guessing</div>
+    </div>
+    <div class="card c6">
+      <span class="n">6</span><span class="t">Deal</span>
+      <ul>
+        <li>New Business or Upsell, from deal history</li>
+        <li>Owner falls back to a default</li>
+        <li>Create the deal and contact roles</li>
+      </ul>
+      <div class="guard">Duplicate guard: already synced means log it and stop</div>
+    </div>
+  </div>
+
+  <div class="log">
+    <b>Error log</b>
+    <span>Every skipped or failed record is written to a log sheet with the reason. Nothing disappears silently, and nobody finds out three weeks later.</span>
+  </div>
+  <div class="foot">Illustrative demo. Made-up records and placeholder systems. Built with generic steps, so the same pattern works in n8n, Zapier, Make or plain code.</div>
+</body>
+</html>

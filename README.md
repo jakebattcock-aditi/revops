@@ -14,6 +14,7 @@ My RevOps freelance workspace — knowledge base, service menu, and Upwork propo
 - `knowledge-base/application-template.md` — Upwork application and Loom structure, Connects rules.
 - `knowledge-base/30-day-plan.md` — Daily routine, targets and scorecard.
 - `proposals/` — Generated Upwork proposals.
+- `portfolio/` — Upwork portfolio assets: diagram, n8n demo workflow, checklist PDF, case study PDF, Loom script. Made-up data only. See `portfolio/README.md`.
 
 ## Usage
 

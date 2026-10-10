@@ -1,0 +1,60 @@
+======================================================================
+1. New customer, long name, no sales org, no campaign
+======================================================================
+Account    : "O'Neill Brightwave Logistics & Freight" + "Solutions International Group"
+  query-safe: O\'Neill Brightwave Logistics & Freight
+  region    : United Kingdom / EMEA (from currency fallback)
+  size band : 51-200
+Contact    : c-primary-7 <- Account primary contact
+  -> match in target CRM by email, create if missing
+Partner    : none (null)
+Campaign   : skipped
+Lead path  : marketing-led (campaign attached)
+Deal       : type=New Business, owner=owner-general-001
+Guard      : create
+
+======================================================================
+2. Existing customer with a reseller, referral campaign, repeat purchase
+======================================================================
+Account    : "Harlow Printworks" + ""
+  query-safe: Harlow Printworks
+  region    : United States / Americas
+  size band : 501-1,000
+Contact    : c-role-9 <- Deal contact role
+  -> match in target CRM by email, create if missing
+Partner    : p-primary-4
+Campaign   : linked, type "Display Ads" -> "Banner Ads"
+Lead path  : marketing-led (campaign attached)
+Deal       : type=Upsell, owner=owner-ana-12
+Guard      : create
+
+======================================================================
+3. Deal that has already been synced
+======================================================================
+Account    : "Pinecrest Dental Group" + ""
+  query-safe: Pinecrest Dental Group
+  region    : Canada / Americas
+  size band : 11-50
+Contact    : c-role-3 <- Deal contact role
+  -> match in target CRM by email, create if missing
+Partner    : none (null)
+Campaign   : linked, type "Webinar" -> "Webinar"
+Lead path  : marketing-led (campaign attached)
+Deal       : type=New Business, owner=owner-ana-12
+Guard      : log-and-stop (Deal deal-1003 is already synced)
+
+======================================================================
+4. Contact with no email
+======================================================================
+Account    : "Redfern Tools" + ""
+  query-safe: Redfern Tools
+  region    : France / EMEA
+  size band : 1-10
+Contact    : c-role-5 <- Deal contact role
+  -> FLAG: contact has no email, skip the email match, write to error log
+Partner    : p-second-8
+Campaign   : skipped
+Lead path  : partner-led (campaign not attached)
+Deal       : type=New Business, owner=owner-ana-12
+Guard      : create
+
