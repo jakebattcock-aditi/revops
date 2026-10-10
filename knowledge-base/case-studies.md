@@ -39,13 +39,15 @@ I'm not a lawyer. Check your Quadient employment agreement and handbook for outs
 - Quadient's name next to specific systems or numbers. "A global B2B software company" is enough.
 - Never use Quadient's Zapier, Salesforce, Gong or Clari accounts, devices or time for freelance work.
 
-Safer Quadient entry for your Upwork profile:
+Rule of thumb (updated): listing tools and describing your OWN work is fine. Don't publish company-level facts: scale numbers (headcount, license counts, regions, users), compliance work, compensation logic, specific flaws in their systems, or "we're rolling out X across the org" as a project. Test: would Quadient be uncomfortable seeing this line on a public page?
+
+Quadient entry for your Upwork profile (use this one):
 
 ```
-Revenue Operations for a global B2B software company across 5 regions. Own CRM integrations between two Salesforce orgs, automation, and revenue-intelligence tooling.
+RevOps for a global software company. I look after Salesforce, the automations that connect it to other systems, and the sales tools on top of it, like Gong and Clari.
 
-- Built a real-time, 7-stage Salesforce-to-Salesforce sync (~136 steps) using Zapier and JavaScript to bridge different data models.
-- Audited field mappings against live pipeline exports and found 13 defects, including address data that never reached the target org.
-- Rolled out Clari across 5 regions with AI-built MEDDPICC fields and local-currency quota uploads.
-- Consolidated 30 Gong trackers into 7 and redesigned AI win/loss capture.
+- Built a real-time sync between two Salesforce orgs, about 136 steps in Zapier with JavaScript, to handle different data models.
+- Audited that sync against live data and documented 13 defects.
+- Set up Clari: user provisioning, AI-built qualification fields and quota uploads.
+- Set up Gong trackers and AI data extraction for win/loss reporting.
 ```

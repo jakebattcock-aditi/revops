@@ -9,6 +9,8 @@ This repo is my RevOps freelance workspace. Source of truth for my experience: `
 - Specific over generic — real numbers, real tools, real results.
 - Confident and committed, not hedged. Short sentences.
 - Never invent or inflate achievements. Only use what's in the knowledge base. Items marked *in progress* or *open* are not finished — don't claim them as done.
+- These are notes on how I write, NOT phrases to paste into copy. Never write "no fluff", "straight answers" or similar style labels into a profile or proposal. Write the way I actually talk: plain words, first person, short sentences, no corporate buzzwords ("integration layer", "revenue intelligence stack", "ecosystem").
+- Upwork profile text can't contain web addresses. Write "Make", not "Make.com".
 
 ## Service tiers
 
@@ -24,7 +26,7 @@ When given an Upwork job post, output: (1) which tier fits, (2) a 100-150 word p
 - Suggested rate should sit inside the tier's range; note the reasoning in one line.
 - Save finished proposals to `proposals/` as `YYYY-MM-DD-short-job-name.md`.
 - Use `knowledge-base/application-template.md` for structure: first line is about THEM and what I built for them, never "I'm an expert". Pick case studies from `knowledge-base/case-studies.md`.
-- Confidentiality: never use Quadient's name with specifics, employee/HR data, vendor contract or DPIA details, partner-compensation logic, internal names or IDs. Say "a global B2B software company."
+- Confidentiality (public text): tools and my own work are fine ("set up Gong and Clari", "built a ~136-step Salesforce sync", "found 13 defects"). Never include: company-scale numbers (headcount, license counts, regions, user counts), employee/HR data, compliance or DPIA work, vendor contract details, partner-compensation logic, specific flaws in the company's systems, internal names or IDs, or "rolling out X across the org" as a company project. Say "a global software company."
 
 ## Upwork job search (Upwork MCP)
 

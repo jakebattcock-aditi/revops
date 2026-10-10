@@ -1,65 +1,75 @@
-# Upwork Profile Copy
+# Upwork Profile Copy (live as of Oct 10, 2026)
 
-Category: Web, Mobile & Software Dev — Scripts & Utilities, AI Apps & Integration, Other - Software Development
+Category: Web, Mobile & Software Dev (Scripts & Utilities, AI Apps & Integration, Other - Software Development)
+Availability: More than 30 hrs/week
+Hourly rate: target $67.75 (change manually in Upwork; the connector can't edit rates)
+Timezone: Mountain
 
-Hourly rate: $75/hr (raise to $95 after 3–5 five-star reviews)
+Rules: no web addresses in profile text ("Make", not "Make.com"). No company-scale numbers, compliance work, compensation logic or internal details. See `case-studies.md`.
 
-## Title
-
-```
-RevOps & CRM Automation | Integrations, Data, Forecasting
-```
-
-## Introduction
+## Title (set by me, live)
 
 ```
-I fix the systems behind your revenue: CRM data you can trust, integrations that don't fail silently, and forecasts that match reality.
+Salesforce, HubSpot, Claude Code, N8N & Zapier Automation | RevOps
+```
 
-I run Revenue Operations for a global B2B sales org across 5 regions, owning the CRM integration layer across 2 Salesforce orgs and the revenue intelligence stack (Gong, Clari). Before that I built n8n and AI automation for an applied AI company, and I've worked as a sales rep myself, so I build systems reps actually use.
+## Overview (live)
+
+```
+Built AI systems that generated $831K+ in qualified pipeline. Now I run RevOps for a global software company.
+
+I help companies get their CRM, automations and sales tools working properly, so the data is right and the team can trust the numbers.
+
+I look after Salesforce, the automations that connect it to other systems, and the sales tools on top of it, like Gong and Clari.
 
 What I've built:
-- A 7-stage, ~136-step integration pipeline that syncs every new Opportunity, Account, Contact and Campaign between two Salesforce orgs in real time, using JavaScript to bridge different data models
-- An AI lead generation system that delivered >$550K in qualified pipeline
-- An automated HubSpot forecasting tool that improved forecast accuracy by 20%
-- An n8n + LLM agent for RFP analysis that saves 15 hours a week
-- A field-mapping audit that caught 13 defects, including billing address data that never reached the target org
-- A 5-region Clari rollout: user provisioning, 8 MEDDPICC AI fields, and quota uploads in local currencies
-- GDPR and data-privacy reviews (DPIAs) for Gong and Clari rollouts in Europe
+- AI lead generation system with predictive models: $550K+ in qualified pipeline
+- AI-driven outbound for an ecommerce agency: $281K+ in pipeline
+- HubSpot forecasting dashboard pulling live data through the API: forecast accuracy up 20%, no more manual calculations
+- n8n and LLM agent that reviews RFPs: saves 15 hours a week, 100% opportunity capture
+- A real-time sync between two Salesforce orgs, about 136 steps built in Zapier with JavaScript
+- An audit of that sync against live data: 13 defects found and documented
+- Clari setup: user provisioning, AI-built qualification fields and quota uploads
+- Gong setup: trackers and AI data extraction for win/loss reporting
 
 How I can help:
-- Integrations and automation builds: connect your CRM to the rest of your stack
-- AI agents and workflows: automate the manual work your team hates
-- CRM audits: find what's broken, wrong or missing, and fix it
-- Revenue intelligence and forecasting: set up Gong, Clari or your CRM so the numbers hold up
-- Fractional RevOps: a part-time owner for your CRM, tools and data
+- Connect your CRM to the rest of your tools, with Zapier, n8n or code
+- Audit your CRM, find what's broken and fix it
+- Set up forecasting and reporting you can trust
+- Be your part-time RevOps person
 
-How I work:
-- Root cause first. I don't patch symptoms.
-- Everything documented, so your team isn't dependent on me.
-- Straight answers and clear timelines. No fluff.
+A bit about me:
+I'm an engineer by training and I've worked as a sales rep, so I know what the data looks like from both sides: the person entering it and the person relying on it. I'm a Salesforce Certified Platform Administrator and an Artificial Intelligence Certified Professional (ICCP).
 
-Tools I've shipped in: Salesforce, HubSpot, n8n, Make.com, Zapier, Gong, Clari, PartnerStack, Python, JavaScript, SOQL, Power BI, Excel. I pick the tool that fits your stack, not the one I'm used to.
+How a project usually goes:
+1. You tell me what's broken or what you want to connect.
+2. I look at your setup and send back a short plan with a price.
+3. I build it, test it against your real data and write down how it works.
+4. You get a handover, and I stay on if you want ongoing help.
 
-Send me what's broken and I'll tell you how I'd fix it.
+I reply to every message within an hour. I'm happy to start with a small audit or a single fix, so you can see how I work before committing to anything bigger.
+
+What to send me: a short description of the problem, the tools you use, and anything you've already tried.
+
+Tools: Salesforce, HubSpot, n8n, Make, Zapier, Gong, Clari, Python, JavaScript, SOQL, Excel. I'll work in whatever you already use.
+
+If something's broken, I'll tell you what it is and how I'd fix it.
 ```
 
 ## Employment history
 
-### Quadient — Revenue Operations Specialist (Calgary, AB) — ~Oct 2025 – Present
+### Quadient: Revenue Operations Specialist (Calgary, AB)
 
 ```
-RevOps for a global B2B sales org across 5 regions. I own the Salesforce integration layer (2 orgs), Zapier automation, and Gong/Clari administration.
+RevOps for a global software company. I look after Salesforce, the automations that connect it to other systems, and the sales tools on top of it, like Gong and Clari.
 
-- Built a 7-stage, ~136-step Zapier pipeline syncing every new Opportunity, Account, Contact and Campaign between two Salesforce orgs in real time, using JavaScript code steps to bridge different data models.
-- Built a 17-field reverse sync feeding PartnerStack partner-compensation tracking.
-- Audited field mappings against live pipeline exports: fixed ~10 wrong mappings and caught 13 defects, including billing address data that never reached the target org.
-- Rolled out Clari across 5 regions: provisioning, 8 MEDDPICC AI fields, and quota uploads in local currencies.
-- Cut 30 Gong trackers to 7 and redesigned AI win/loss capture to fit a 7-slot cap.
-- Built a bottom-up Gong license count from a 1,013-row HR export (438/149 seats), fixing 4 silent data bugs.
-- Fixed dashboards broken since 2023 with one Setup change.
+- Built a real-time sync between two Salesforce orgs, about 136 steps in Zapier with JavaScript, to handle different data models.
+- Audited that sync against live data and documented 13 defects.
+- Set up Clari: user provisioning, AI-built qualification fields and quota uploads.
+- Set up Gong trackers and AI data extraction for win/loss reporting.
 ```
 
-### AltaML — RevOps Analyst, Workflow Automation (Calgary, AB) — May 2025 – Oct 2025
+### AltaML: RevOps Analyst, Workflow Automation (May 2025 – Oct 2025)
 
 ```
 Built the RevOps automation layer for an applied AI company's go-to-market team, combining n8n workflows, APIs, LLMs and custom Python scripts to eliminate manual work.
@@ -70,7 +80,7 @@ Built the RevOps automation layer for an applied AI company's go-to-market team,
 - Built automated nurture campaigns in HubSpot workflows, using AI search agents to personalize outreach with real-time industry content across verticals.
 ```
 
-### JBC Flow — Director (Calgary, AB) — Sep 2024 – Present
+### Aditi (formerly JBC Flow): Director (Sep 2024 – Present)
 
 ```
 Run my own consultancy building AI-driven outbound and sales automation systems for small and mid-sized businesses. I own the full cycle: discovery, proposal, pricing, build and delivery.
@@ -80,7 +90,7 @@ Run my own consultancy building AI-driven outbound and sales automation systems 
 - Built AI-agent sales automation for a luxury retailer to source and qualify opportunities.
 ```
 
-### Showpass — Sales Executive (Calgary, AB) — Sep 2023 – Apr 2024
+### Showpass: Sales Executive (Sep 2023 – Apr 2024)
 
 ```
 Outbound sales for an event ticketing platform: prospecting ICP accounts across channels and running discovery meetings with decision-makers.
@@ -89,7 +99,7 @@ Outbound sales for an event ticketing platform: prospecting ICP accounts across 
 - Converted over $110M USD in qualified opportunities.
 ```
 
-### Panevo — Sales Executive (Vancouver, BC) — Dec 2022 – Jun 2023
+### Panevo: Sales Executive (Dec 2022 – Jun 2023)
 
 ```
 Outbound sales for a utility bill management (UBM) SaaS platform, reaching decision-makers through targeted outreach and discovery meetings.
@@ -99,4 +109,9 @@ Outbound sales for a utility bill management (UBM) SaaS platform, reaching decis
 
 ## Education
 
-Memorial University of Newfoundland — Bachelor of Engineering, Mechanical Engineering (2021)
+Memorial University of Newfoundland: Bachelor of Engineering, Mechanical (2021)
+
+## Certifications
+
+- Salesforce Certified Platform Administrator
+- Artificial Intelligence Certified Professional (ICCP)
