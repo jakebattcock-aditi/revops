@@ -13,7 +13,6 @@ My RevOps freelance workspace — knowledge base, service menu, and Upwork propo
 - `knowledge-base/case-studies.md` — Case studies in "I did X for Y by Z" format, plus confidentiality rules.
 - `knowledge-base/application-template.md` — Upwork application and Loom structure, Connects rules.
 - `knowledge-base/30-day-plan.md` — Daily routine, targets and scorecard.
-- `.mcp.json` — Registers the Upwork MCP server.
 - `proposals/` — Generated Upwork proposals.
 
 ## Usage
