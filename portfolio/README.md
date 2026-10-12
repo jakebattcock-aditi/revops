@@ -14,33 +14,23 @@ Everything here uses made-up data or generic descriptions. No Quadient names, ID
 | `sync-logic.js`, `sample-data.json`, `run-demo.js`, `test-run-output.txt` | The decision logic, four made-up scenarios and a run of them | Proof it behaves; show the output in the Loom |
 | `architecture-diagram.html`, `*.html` | Sources for the image and PDFs | Edit text, then re-render |
 
-## Upwork portfolio items to create
+## Upwork portfolio item (one combined project)
 
-Add these three under Profile, then Portfolio, then Add project. Upwork doesn't allow web addresses in text, so none are included.
+One project, not three: the demo and checklist come from the same build, so they sit inside it. Add a different project (for example the Talent Studios work) as the second item once it's ready. Upwork doesn't allow web addresses in text, so none are included.
 
-### 1. Real-time sync between two Salesforce orgs
-- **Attach:** `case-study.pdf`, `architecture-diagram.png`
-- **Description:**
+- **Title (65 chars):** `Salesforce-to-Salesforce sync: case study, demo and audit checklist`
+- **Role:** `Integration builder and auditor`
+- **Skills:** Salesforce, Zapier, API Integration, JavaScript, n8n (add CRM Automation, Data Migration if there's room)
+- **Content, in order:**
+  1. `architecture-diagram.png` (cover image)
+  2. `case-study.pdf`
+  3. your n8n screenshot
+  4. `failure-patterns-checklist.pdf`
+  5. your Loom, as a link, once recorded
+- **Description** (cut the last sentence if it is over the limit):
 ```
-A chained, event-driven sync that copies every new deal and its related records between two Salesforce orgs with different data models. Seven stages, 136 steps. Each stage looks a record up first, then updates or creates it, so nothing is blindly copied. A follow-up audit of the live pipeline found and documented 13 defects. Built with Zapier and JavaScript. Details are generalised.
+Goal: copy every new deal, with its account, contacts, partners and campaign, from one Salesforce org to another, despite different data models and picklists. Solution: a 7-stage, 136-step pipeline in Zapier and JavaScript. Each stage looks a record up first, then updates or creates it, and problems go to an error log. Impact: records arrive automatically and de-duplicated, and a follow-up audit found and documented 13 defects. Inside: the case study, an architecture diagram, a working demo of the same pattern on made-up data, and a checklist of 8 ways a sync fails silently.
 ```
-- **Skills to tag:** Salesforce, Zapier, API Integration, JavaScript, Data Migration
-
-### 2. Deal Sync demo: a CRM-to-CRM workflow
-- **Attach:** `architecture-diagram.png` and your n8n canvas screenshot
-- **Description:**
-```
-A working demo of the pattern behind a reliable CRM sync, built on made-up data. Waits for related records to save, cleans and maps account data, picks the best contact through a three-step fallback, translates campaign types, guards against duplicate deals and logs every skipped record. The same logic runs in n8n, Zapier, Make or plain code.
-```
-- **Skills to tag:** n8n, Automation, CRM Automation, API Integration, JavaScript
-
-### 3. 8 ways a CRM sync fails without telling you
-- **Attach:** `failure-patterns-checklist.pdf`
-- **Description:**
-```
-A one-page checklist of the problems I look for first when auditing a CRM integration, with a quick test for each. Placeholders left in live fields, hardcoded test IDs, keys saved only on create, searches on blank values and more. Free to use. If you want it run on your sync, message me.
-```
-- **Skills to tag:** CRM Automation, Salesforce, Data Migration, Automation
 
 ## Getting the n8n screenshot (no app logos)
 
