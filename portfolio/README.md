@@ -29,7 +29,7 @@ One project, not three: the demo and checklist come from the same build, so they
   5. your Loom, as a link, once recorded
 - **Description** (cut the last sentence if it is over the limit):
 ```
-Goal: copy every new deal, with its account, contacts, partners and campaign, from one Salesforce org to another, despite different data models and picklists. Solution: a 7-stage, 136-step pipeline in Zapier and JavaScript. Each stage looks a record up first, then updates or creates it, and problems go to an error log. Impact: records arrive automatically and de-duplicated, and a follow-up audit found and documented 13 defects. Inside: the case study, an architecture diagram, an n8n rebuild of the same pattern, and a checklist of 8 ways a sync fails silently.
+Goal: copy every new deal, with its account, contacts, partners and campaign, from one Salesforce org to another, despite different data models and picklists. Solution: a 7-stage, 136-step pipeline in Zapier and JavaScript. Each stage looks a record up first, then updates or creates it, and problems go to an error log. Impact: records arrive automatically and de-duplicated, and a follow-up audit found and documented 13 defects. Inside: the case study, an architecture diagram, an n8n rebuild of the architecture, and a checklist of 8 ways a sync fails silently. The production system and its data are confidential, so the n8n version uses sample records.
 ```
 
 ## The workflow is already built in n8n

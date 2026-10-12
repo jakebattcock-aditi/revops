@@ -10,6 +10,7 @@ This repo is my RevOps freelance workspace. Source of truth for my experience: `
 - Confident and committed, not hedged. Short sentences.
 - Never invent or inflate achievements. Only use what's in the knowledge base. Items marked *in progress* or *open* are not finished — don't claim them as done.
 - These are notes on how I write, NOT phrases to paste into copy. Never write "no fluff", "straight answers" or similar style labels into a profile or proposal. Write the way I actually talk: plain words, first person, short sentences, no corporate buzzwords ("integration layer", "revenue intelligence stack", "ecosystem").
+- Accuracy about the n8n workflow: the Zapier pipeline is the real Quadient build. The n8n workflow is a rebuild of the architecture on sample records. Never say or imply it was built for or run at Quadient. Say the production system and data are confidential.
 - Upwork profile text can't contain web addresses. Write "Make", not "Make.com".
 
 ## Service tiers
