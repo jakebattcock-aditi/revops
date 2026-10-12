@@ -32,6 +32,10 @@ One project, not three: the demo and checklist come from the same build, so they
 Goal: copy every new deal, with its account, contacts, partners and campaign, from one Salesforce org to another, despite different data models and picklists. Solution: a 7-stage, 136-step pipeline in Zapier and JavaScript. Each stage looks a record up first, then updates or creates it, and problems go to an error log. Impact: records arrive automatically and de-duplicated, and a follow-up audit found and documented 13 defects. Inside: the case study, an architecture diagram, a working demo of the same pattern on made-up data, and a checklist of 8 ways a sync fails silently.
 ```
 
+## The workflow is already built in n8n
+
+A copy of the demo workflow ("Deal Sync Demo (Source CRM to Target CRM)", 31 nodes, six grouped stages) was created directly in the n8n cloud account through the connector and left as an unpublished draft. It was test-run with pinned data for the HTTP steps and the logic nodes ran correctly on the long-name, currency-fallback, no-campaign scenario. Open it from the n8n workflow list, press fit view, and screenshot. The JSON file below remains as a backup you can import.
+
 ## Getting the n8n screenshot (no app logos)
 
 1. In n8n, open a new workflow, then the menu, then Import from file, and choose `n8n-deal-sync-demo.json`.
