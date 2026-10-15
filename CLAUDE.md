@@ -35,9 +35,9 @@ When asked to find jobs, use the Upwork MCP tools (account org_uid comes from `l
 
 **Search** (several queries, dedupe, prefer `mode=most_recent` for speed): Salesforce admin/integration, HubSpot audit/automation, CRM audit/cleanup, Zapier, n8n, Make.com, RevOps, sales operations, Gong, Clari, sales forecasting, AI agent/workflow automation.
 
-**Freshness is the first rule.** Timing beats everything else. Ideal: posted in the last hour. Up to 2-3 hours if it's a strong fit. Firm maximum 4 hours, no exceptions. Never recommend or draft for anything older, however good the fit, because it won't be seen. Compute the age from `published_date` against the current UTC time and show it on every job. Don't trust the proposal count on the connector (it showed 6 on a job that really had 128); use the age to judge.
+**Freshness is the first rule.** Timing beats everything else. Ideal: posted in the last hour. Search window is up to 8 hours, and every list is ranked newest first (age beats everything else, as long as the job passes the fit gates). Never recommend or draft for anything older than 8 hours, however good the fit, because it won't be seen. Don't pad the list with non-fits to reach a count; if fewer than 5 real fits exist, say so. Compute the age from `published_date` against the current UTC time and show it on every job. Don't trust the proposal count on the connector (it showed 6 on a job that really had 128); use the age to judge.
 
-**Skip:** cold calling/appointment setting/list building, pure Apex/LWC dev, SEO/ads, Zoho/GoHighLevel-only, under $500 fixed or under $40/hr, payment unverified, anything older than 4 hours.
+**Skip:** cold calling/appointment setting/list building, pure Apex/LWC dev, SEO/ads, Zoho/GoHighLevel-only, under $500 fixed or under $40/hr, payment unverified, anything older than 8 hours.
 
 **Score 1–5:** fit to my case studies, fit to a service tier, budget, client quality (verified payment, rating, hires, spend), competition (proposal count, age). Prefer jobs posted in the last few hours.
 
