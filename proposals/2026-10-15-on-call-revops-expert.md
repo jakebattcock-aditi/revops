@@ -1,5 +1,7 @@
 # On-Call RevOps Expert (Salesforce, HubSpot, Clay) for B2B SaaS Sales Team
 
+**NOT SENDING.** Posted Oct 6 (9 days ago) with 128 proposals on the live page and the client last viewed two days ago. Fails the freshness rule. Kept only as a reference for the wording.
+
 Job: https://www.upwork.com/jobs/~022107462594374610772
 Posted Oct 6. $50-$100/hr hourly, on-demand through Slack. Client: $202K spent, 74% hire rate, 4.98 score. 6 proposals when checked, 0 hired, 14 invites sent. Connects: 22.
 

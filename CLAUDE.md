@@ -35,7 +35,9 @@ When asked to find jobs, use the Upwork MCP tools (account org_uid comes from `l
 
 **Search** (several queries, dedupe, prefer `mode=most_recent` for speed): Salesforce admin/integration, HubSpot audit/automation, CRM audit/cleanup, Zapier, n8n, Make.com, RevOps, sales operations, Gong, Clari, sales forecasting, AI agent/workflow automation.
 
-**Skip:** cold calling/appointment setting/list building, pure Apex/LWC dev, SEO/ads, Zoho/GoHighLevel-only, under $500 fixed or under $40/hr, payment unverified, 50+ proposals on a job older than a day.
+**Freshness is the first rule.** Timing beats everything else. Ideal: posted in the last hour. Up to 3 hours if it's a strong fit. Hard maximum 6 hours, for now. Never recommend or draft for anything older, however good the fit, because it won't be seen. Compute the age from `published_date` against the current UTC time and show it on every job. Don't trust the proposal count on the connector (it showed 6 on a job that really had 128); use the age to judge.
+
+**Skip:** cold calling/appointment setting/list building, pure Apex/LWC dev, SEO/ads, Zoho/GoHighLevel-only, under $500 fixed or under $40/hr, payment unverified, anything older than 6 hours.
 
 **Score 1–5:** fit to my case studies, fit to a service tier, budget, client quality (verified payment, rating, hires, spend), competition (proposal count, age). Prefer jobs posted in the last few hours.
 
